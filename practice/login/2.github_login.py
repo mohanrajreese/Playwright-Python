@@ -1,44 +1,26 @@
-from playwright.sync_api import Playwright, sync_playwright, expect
+from playwright.sync_api import sync_playwright
 
-
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
+with sync_playwright() as spw:
+    browser = spw.chromium.launch(headless = False)
     context = browser.new_context()
-
-    # Open new page
     page = context.new_page()
-
-    # Go to https://github.com/login
+    
     page.goto("https://github.com/login")
-
-    # Click input[name="login"]
-    page.locator("input[name=\"login\"]").click()
-
-    # Fill input[name="login"]
-    page.locator("input[name=\"login\"]").fill("mohanrajreese")
-
-    # Click input[name="password"]
-    page.locator("input[name=\"password\"]").click()
-
-    # Fill input[name="password"]
-    page.locator("input[name=\"password\"]").fill("9843375583Moh@n")
-
-    # Click input:has-text("Sign in")
-    page.locator("input:has-text(\"Sign in\")").click()
-    # expect(page).to_have_url("https://github.com/sessions/verified-device")
-
-    # Click [placeholder="\36 -digit code"]
-    page.locator("[placeholder=\"\\36 -digit code\"]").click()
-
-    # Fill [placeholder="\36 -digit code"]
-    # with page.expect_navigation(url="https://github.com/"):
-    with page.expect_navigation():
-        page.locator("[placeholder=\"\\36 -digit code\"]").fill("715754")
-
-    # ---------------------
-    context.close()
-    browser.close()
-
-
-with sync_playwright() as playwright:
-    run(playwright)
+    login = page.locator("[id=\"login_field\"]")
+    login.click()
+    login.fill("mohanrajreese")
+    password = page.locator("[name=\"password\"]")
+    password.click()
+    password.fill("9843375583Moh@n")
+    login = page.locator("[value=\"Sign in\"]")
+    login.click()
+    dropdown = page.locator("[aria-label=\"View profile and more\"]")
+    dropdown.click()
+    repo = page.locator("[data-ga-click=\"Header, go to repositories, text:your repositories\"]")
+    repo.click()
+    sel_repo = page.locator("[href=\"/mohanrajreese/Playwright-Python\"]")
+    sel_repo.click()
+    ins_repo = page.locator("feature-callout summary span")   
+    ins_repo.click()
+    page.pause()
+    

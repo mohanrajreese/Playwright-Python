@@ -6,9 +6,8 @@ with sync_playwright() as spw:
     page = context.new_page()
     page.goto('https://github.com/login')
 
-    # Interact with login form
+    # 
     page.locatclick('text=Login')
     page.fill('[name="login"]', 'mohanrajreese')
     page.fill('[name="password"]', '9843375583Moh@n')
     page.click('text=Submit')
-    # Verify app is logged in
